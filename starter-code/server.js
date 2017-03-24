@@ -110,7 +110,7 @@ app.put('/articles/:id', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE: This is an AJAX request that finds a specific article in the articles file in the database with the selected id, supplied by the user. It then removes, and returns an affirmative message to the user. It is a CRUD 'remove' operation, that runs through 2-5 on the drawing.
 app.delete('/articles/:id', function(request, response) {
   client.query(
     `DELETE FROM articles WHERE article_id=$1;`,
@@ -124,7 +124,7 @@ app.delete('/articles/:id', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE: This is an AJAX request to all article files. It then removes them, and returns an affirmative message to the user. It is a CRUD 'remove' operation, that runs through 2-5 on the drawing.
 app.delete('/articles', function(request, response) {
   client.query(
     'DELETE FROM articles;'
@@ -137,7 +137,7 @@ app.delete('/articles', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE:This calls loadDB
 loadDB();
 
 app.listen(PORT, function() {
@@ -147,7 +147,7 @@ app.listen(PORT, function() {
 
 //////// ** DATABASE LOADER ** ////////
 ////////////////////////////////////////
-// NOTE:
+// NOTE:This function sends a 
 function loadArticles() {
   client.query('SELECT COUNT(*) FROM articles')
   .then(result => {
