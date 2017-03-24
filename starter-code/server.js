@@ -14,7 +14,8 @@ const app = express();
 // Windows and Linux users; You should have retained the user/pw from the pre-work for this course.
 // Your url may require that it's composed of additional information including user and password
 // const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
-const conString = 'postgres://localhost:5432';
+const conString = 'postgres://postgres:1234@localhost:5432/kilovolt';
+// const conString = 'postgres://localhost:5432';
 
 // REVIEW: Pass the conString to pg, which creates a new client object
 const client = new pg.Client(conString);
@@ -32,11 +33,13 @@ app.use(express.static('./public'));
 // REVIEW: Routes for requesting HTML resources
 
 // NOTE:
+//The user sends an AJAX request for the home page of the website. The server does not consult the database, as the target for the request is in the same directory (hence the root: '.'). It returns the default webpage of the site (index.html). This is a CRUD 'read' operation that goes through numbers 2 and 5 in the drawing.
 app.get('/', function(request, response) {
   response.sendFile('index.html', {root: '.'});
 });
 
 // NOTE:
+// This one does the same as above, without consulting the database. It links to the page /new instead, taking them to a different webpage within the same directory. The server returns new.html. Again, a 'read' operation through 2 and 5.
 app.get('/new', function(request, response) {
   response.sendFile('new.html', {root: '.'});
 });
@@ -56,6 +59,7 @@ app.get('/articles', function(request, response) {
 });
 
 // NOTE:
+//This is an AJAX request that goes into the articles file in the database. It inserts the values $1,$2,$3, etc, into a new json object. It then returns with a confirmation output to the user. It is a CRUD 'create' operation that runs through 2-5 on the drawing.
 app.post('/articles', function(request, response) {
   client.query(
     `INSERT INTO
@@ -80,6 +84,7 @@ app.post('/articles', function(request, response) {
 });
 
 // NOTE:
+// This is an AJAX request that finds a specific article in the articles file in the database with the selected id, supplied by the user. It then changes its parameters to new values, and returns an affirmative message to the user. It is a CRUD 'update' operation, that runs through 2-5 on the drawing.
 app.put('/articles/:id', function(request, response) {
   client.query(
     `UPDATE articles
